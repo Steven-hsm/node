@@ -41,20 +41,53 @@ MongoDB是由C++语言编写，是一个基于分布式文件存储的开源数�
     db.collection.drop()
 ```
 5. 插入文档
-```
+```mongdb
     db.collectionName.insert(docment)//docment可以理解为一个json对象
     db.collectionName.save(docment)//如果指定了id，可以理解为更新操作，没有指定同insert
 ```
 6. 查看集合中的文档
-```
+```mongdb
      db.collectionName.find();
 ```
 7. 更新文档
-```
+```mongdb
     db.collection.update();//具体参数请参考官方文档
 ```
 8. 删除文档
-```
+```mongdb
     db.collection.remove();//具体可以参考官方文档
 ```
 
+# 高级
+
+1. 聚合
+```mongdb
+    db.collection.aggregate
+    db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$sum : 1}}}]) 
+
+    $sum，$avg，$min，$max，$push，$addToSet，$first，$last
+```
+2. 管道
+MongoDB的聚合管道将MongoDB文档在一个管道处理完毕后将结果传递给下一个管道处理。管道操作是可以重复的。
+
+表达式：处理输入文档并输出。表达式是无状态的，只能用于计算当前聚合管道的文档，不能处理其它的文档。
+
+这里我们介绍一下聚合框架中常用的几个操作：
+
+$project：修改输入文档的结构。可以用来重命名、增加或删除域，也可以用于创建计算结果以及嵌套文档。
+
+$match：用于过滤数据，只输出符合条件的文档。$match使用MongoDB的标准查询操作。
+
+$limit：用来限制MongoDB聚合管道返回的文档数。
+
+$skip：在聚合管道中跳过指定数量的文档，并返回余下的文档。
+
+$unwind：将文档中的某一个数组类型字段拆分成多条，每条包含数组中的一个值。
+
+$group：将集合中的文档分组，可用于统计结果。
+
+$sort：将输入文档排序后输出。
+
+$geoNear：输出接近某一地理位置的有序文档。
+3. 复制
+    主要分为一主一从和一主多从
